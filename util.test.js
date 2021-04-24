@@ -1,5 +1,7 @@
+//jest.mock("./http.js");
+
 const puppeteer = require("puppeteer");
-const { generateText, checkAndGenerate } = require("./util");
+const { generateText, checkAndGenerate, loadTitle } = require("./util");
 
 //unit test for function generateText()
 test("should output name and age", () => {
@@ -21,7 +23,7 @@ test("should generate valid text output", () => {
 //e2e testing
 test("should enter name, age and submit", async () => {
   const browser = await puppeteer.launch({
-    headless: false,
+    headless: true,
     slowMo: 30,
   });
   try {
@@ -45,3 +47,9 @@ test("should enter name, age and submit", async () => {
     throw error;
   }
 }, 10000);
+
+test("should print text in uppercase", async () => {
+  await loadTitle().then((title) => {
+    expect(title).toBe("LORD COMMANDER OF THE NIGHT'S WATCH");
+  });
+});
